@@ -1,6 +1,5 @@
 name: netlify-plugin-dotenv
 inputs:
   - name: method
-    description: Defines file resolution method
     required: false
     default: branch

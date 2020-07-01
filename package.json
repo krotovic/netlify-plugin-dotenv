@@ -1,0 +1,23 @@
+{
+    "name": "netlify-plugin-dotenv",
+    "version": "1.0.0",
+    "description": "Netlify Build plugin that reads environment variables from .env file",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/krotovic/netlify-plugin-dotenv"
+    },
+    "bugs": {
+        "url": "https://github.com/krotovic/netlify-plugin-dotenv/issues"
+    },
+    "main": "src/index.js",
+    "scripts": {
+        "test": "jest src/*.test.js"
+    },
+    "dependencies": {
+        "dotenv": "8.2.0"
+    },
+    "devDependencies": {
+        "jest": "26.0.1"
+    }
+}

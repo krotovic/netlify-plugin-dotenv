@@ -22,7 +22,7 @@ function log(message) {
 }
 
 module.exports = {
-    onPreBuild({ inputs, constants }) {
+    onPreBuild({ inputs, utils }) {
         const fileName = resolveFile(inputs.method);
         const filePath = path.resolve(process.cwd(), fileName);
         if (!fs.existsSync(filePath)) {
@@ -30,7 +30,13 @@ module.exports = {
             return;
         }
         log(`[netlify dotenv] Log: Loading ENV file '${filePath}'`);
-        const output = dotenv.parse(fs.readFileSync(filePath, 'utf8'));
+        let output = {};
+        try {
+            output = dotenv.parse(fs.readFileSync(filePath, 'utf8'));
+        } catch (error) {
+            utils.build.failBuild(`Failed to parse .env file. Details: ${error.message}`);
+            return;
+        }
         for (const [key, value] of Object.entries(output)) {
             log(`[netlify dotenv] Log: Setting ${key} as ${value}`);
             process.env[key] = value;

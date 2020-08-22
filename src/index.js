@@ -24,7 +24,7 @@ function log(message) {
 module.exports = {
     onPreBuild({ inputs, constants }) {
         const fileName = resolveFile(inputs.method);
-        const filePath = path.resolve(path.dirname(constants.CONFIG_PATH), fileName);
+        const filePath = path.resolve(process.cwd(), fileName);
         if (!fs.existsSync(filePath)) {
             log(`[netlify dotenv] Warning: Could not find ENV file '${filePath}'`);
             return;

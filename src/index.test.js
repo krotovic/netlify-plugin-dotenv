@@ -1,5 +1,7 @@
 const { onPreBuild } = require('./index.js');
 
+const buildFail = jest.fn();
+
 describe('onPreBuild', () => {
     afterEach(() => {
         delete process.env.TEST_ENV;
@@ -11,8 +13,10 @@ describe('onPreBuild', () => {
             inputs: {
                 method: 'branch',
             },
-            constants: {
-                CONFIG_PATH: __filename,
+            utils: {
+                build: {
+                    failBuild: buildFail,
+                },
             },
         });
 
@@ -25,8 +29,10 @@ describe('onPreBuild', () => {
             inputs: {
                 method: 'context',
             },
-            constants: {
-                CONFIG_PATH: __filename,
+            utils: {
+                build: {
+                    failBuild: buildFail,
+                },
             },
         });
 
@@ -38,8 +44,10 @@ describe('onPreBuild', () => {
             inputs: {
                 method: 'anything',
             },
-            constants: {
-                CONFIG_PATH: __filename,
+            utils: {
+                build: {
+                    failBuild: buildFail,
+                },
             },
         });
 
@@ -54,11 +62,15 @@ describe('onPreBuild', () => {
                 inputs: {
                     method: 'branch',
                 },
-                constants: {
-                    CONFIG_PATH: __filename,
+                utils: {
+                    build: {
+                        failBuild: buildFail,
+                    },
                 },
             });
         }).not.toThrow();
+
+        expect(buildFail).not.toBeCalled();
 
         expect(process.env.TEST_ENV).toBe(undefined);
     });
@@ -69,8 +81,10 @@ describe('onPreBuild', () => {
             inputs: {
                 method: 'branch',
             },
-            constants: {
-                CONFIG_PATH: __filename,
+            utils: {
+                build: {
+                    failBuild: buildFail,
+                },
             },
         });
 

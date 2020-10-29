@@ -18,7 +18,7 @@ const resolveFile = (method) => {
 
 function log(message) {
     if (!process.env.DEBUG) return;
-    console.debug(message);
+    console.debug(`[netlify dotenv] ${message}`);
 }
 
 module.exports = {
@@ -26,10 +26,10 @@ module.exports = {
         const fileName = resolveFile(inputs.method);
         const filePath = path.resolve(process.cwd(), fileName);
         if (!fs.existsSync(filePath)) {
-            log(`[netlify dotenv] Warning: Could not find ENV file '${filePath}'`);
+            log(`Warning: Could not find ENV file '${filePath}'`);
             return;
         }
-        log(`[netlify dotenv] Log: Loading ENV file '${filePath}'`);
+        log(`Log: Loading ENV file '${filePath}'`);
         let output = {};
         try {
             output = dotenv.parse(fs.readFileSync(filePath, 'utf8'));
@@ -38,7 +38,11 @@ module.exports = {
             return;
         }
         for (const [key, value] of Object.entries(output)) {
-            log(`[netlify dotenv] Log: Setting ${key} as ${value}`);
+            if (inputs.skipDefined === 'true' && process.env[key] !== undefined) {
+                log(`Log: Skipping setting ${key} as it is already defined as '${process.env[key]}'`);
+                continue;
+            }
+            log(`Log: Setting ${key} as ${value}`);
             process.env[key] = value;
         }
     }

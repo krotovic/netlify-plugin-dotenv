@@ -11,10 +11,12 @@ config file like this:
 # netlify.toml
 
 [[plugins]]
-package = "dotenv"
+  package = "netlify-plugin-dotenv"
 ```
 
 ## Options
+
+### Resultion method
 
 You can configure this plugin to use different resolution 
 method. It supports resolving by git branch (_branch_) like `.env.master`
@@ -29,7 +31,20 @@ Configure it in your config file like so:
 # netlify.toml
 
 [[plugins]]
-package = "dotenv"
+  package = "netlify-plugin-dotenv"
   [plugins.inputs]
-  method = "branch" # branch, context, none
+    method = "branch" # branch, context, none
+```
+
+### Skipping already defined
+
+You can skip already defined variables by setting up `skipDefined` like so:
+
+```toml
+# netlify.toml
+
+[[plugins]]
+  package = "netlify-plugin-dotenv"
+  [plugins.inputs]
+    skipDefined = "true"
 ```

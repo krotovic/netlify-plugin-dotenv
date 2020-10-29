@@ -90,4 +90,22 @@ describe('onPreBuild', () => {
 
         expect(process.env.BRANCH).toBe('branch-name');
     });
+
+    it('will not overwrite variables with already defined values', () => {
+        process.env.BRANCH = 'branch-name';
+        process.env.TEST_ENV = 'abc';
+        onPreBuild({
+            inputs: {
+                method: 'branch',
+                skipDefined: 'true',
+            },
+            utils: {
+                build: {
+                    failBuild: buildFail,
+                },
+            },
+        });
+
+        expect(process.env.TEST_ENV).toBe('abc');
+    });
 });

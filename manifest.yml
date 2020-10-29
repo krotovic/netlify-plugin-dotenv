@@ -3,3 +3,5 @@ inputs:
   - name: method
     required: false
     default: branch
+  - name: skipDefined
+    required: false

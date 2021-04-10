@@ -4,8 +4,7 @@ Netlify Build plugin that reads environment variables from .env file
 ## Usage
 
 You can just add this plugin to your Netlify configuration 
-either by installing in the dashboard or including in your 
-config file like this:
+by including in your config file like this:
 
 ```toml
 # netlify.toml
@@ -14,31 +13,15 @@ config file like this:
   package = "netlify-plugin-dotenv"
 ```
 
-## Options
+> **Note:** Unfortunatelly this plugin wasn't accepted to be part of
+the official Netlify plugins so you can't install it from the dashboard.
+And you **have to** install it as dependency of your project by adding it into `package.json` file.
 
-### Resultion method
+### Options
 
-You can configure this plugin to use different resolution 
-method. It supports resolving by git branch (_branch_) like `.env.master`
-or by build context (_context_) like `.env.branch-preview`.
-Or simply use `.env` file (_none_). The default method is __branch__.
-
-If the plugin can't find the file it won't fail the build.
-
-Configure it in your config file like so:
-
-```toml
-# netlify.toml
-
-[[plugins]]
-  package = "netlify-plugin-dotenv"
-  [plugins.inputs]
-    method = "branch" # branch, context, none
-```
-
-### Skipping already defined
-
-You can skip already defined variables by setting up `skipDefined` like so:
+| name | default | description |
+| ---- | ------- | ----------- |
+| variable | none | You can specify what environment variable will be used for resolving the file. If you specify `BRANCH` the filename will become `.env.${process.env.BRANCH}`. |
 
 ```toml
 # netlify.toml
@@ -46,5 +29,13 @@ You can skip already defined variables by setting up `skipDefined` like so:
 [[plugins]]
   package = "netlify-plugin-dotenv"
   [plugins.inputs]
-    skipDefined = "true"
+    variable = "BRANCH"
 ```
+
+This plugin will read and parse files in the following order:
+
+1. `.env.master` for `BRANCH=master` and variable = BRANCH
+1. `.env`
+
+Using this order will result in overwriting environment variables from bottom up.
+So if you have some default variable `FOO` defined in both `.env` and `.env.production` it will resolve using variable from the latter one.

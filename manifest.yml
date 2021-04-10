@@ -1,7 +1,4 @@
 name: netlify-plugin-dotenv
 inputs:
-  - name: method
-    required: false
-    default: branch
-  - name: skipDefined
+  - name: variable
     required: false

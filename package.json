@@ -12,12 +12,13 @@
     },
     "main": "src/index.js",
     "scripts": {
-        "test": "jest src/*.test.js"
+        "test": "jest src/index.test.js"
     },
     "dependencies": {
-        "dotenv": "8.2.0"
+        "dotenv": ">=8.0.0"
     },
     "devDependencies": {
+        "dotenv": "16.0.3",
         "jest": "26.0.1"
     }
 }
